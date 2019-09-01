@@ -4,13 +4,13 @@
 
 A quick settings tile to quickly record screen.
 
-<img src="Screenshots/screenrecord_demo.gif" align="middle">
-
 This app also only runs on Nougat+ devices.
 
 <a href='https://play.google.com/store/apps/details?id=soup.tile.screenrecord'>
 <img height="60px" src='https://play.google.com/intl/en/badges/images/generic/en_badge_web_generic.png'/>
 </a>
+
+<img width="200" src="Screenshots/screenrecord_demo.gif">
 
 ## License
 

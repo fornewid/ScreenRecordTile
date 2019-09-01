@@ -1,0 +1,93 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        applicationId build_versions.appId
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode build_versions.versionCode
+        versionName build_versions.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Define all keys for preferences
+
+        def prefFakeStatusBar = "fake_status_bar"
+        buildConfigField 'String', 'PREF_FAKE_STATUS_BAR', "\"${prefFakeStatusBar}\""
+        resValue("string", "pref_fake_status_bar", prefFakeStatusBar)
+
+        def prefFakeStatusBarTimer = "fake_status_bar_timer"
+        buildConfigField("String", "PREF_FAKE_STATUS_BAR_TIMER", "\"${prefFakeStatusBarTimer}\"")
+        resValue("string", "pref_fake_status_bar_timer", prefFakeStatusBarTimer)
+    }
+    signingConfigs {
+        release {
+            def useReleaseKeystore = rootProject.file("signing/app-release.jks").exists()
+            if (useReleaseKeystore) {
+                storeFile rootProject.file("signing/app-release.jks")
+                storePassword propOrDef('storePassword', "")
+                keyAlias propOrDef('keyAlias', "")
+                keyPassword propOrDef('keyPassword', "")
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [crashlytics_enabled: false]
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [crashlytics_enabled: true]
+        }
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin.stdlib
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.core_ktx
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.fragment_ktx
+    implementation deps.androidx.preference_ktx
+    implementation deps.android_material
+
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_processor
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-perf:19.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
+    def coroutines_version = '1.2.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+    implementation deps.util.timber
+    testImplementation deps.test.junit
+    androidTestImplementation deps.androidx.test.junit
+    androidTestImplementation deps.androidx.test.espresso.core
+}
+
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'io.fabric'
+}

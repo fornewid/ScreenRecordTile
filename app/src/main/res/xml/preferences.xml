@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:icon="@drawable/ic_setting_info"
+        android:key="info"
+        android:selectable="false"
+        android:summary="@string/setting_info_description" />
+
+    <PreferenceCategory
+        android:key="category_status_bar"
+        android:title="@string/setting_category_status_bar">
+<!-- TODO:
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_setting_fake_status_bar"
+            android:key="@string/pref_fake_status_bar"
+            android:summary="@string/setting_fake_status_bar_summary"
+            android:title="@string/setting_fake_status_bar_title" />
+        <SwitchPreferenceCompatEx
+            android:defaultValue="false"
+            android:dependency="@string/pref_fake_status_bar"
+            android:icon="@drawable/ic_setting_fake_status_bar_timer"
+            android:key="@string/pref_fake_status_bar_timer"
+            android:summary="@string/setting_fake_status_bar_timer_summary"
+            android:title="@string/setting_fake_status_bar_timer_title"
+            app:dependencyChecked="false" />
+-->
+        <Preference
+            android:icon="@drawable/ic_setting_demo_mode"
+            android:key="demo_mode"
+            android:title="@string/setting_demo_mode_title">
+            <intent
+                android:action="com.android.settings.action.DEMO_MODE"
+                android:targetPackage="com.android.systemui" />
+        </Preference>
+
+    </PreferenceCategory>
+
+    <Preference
+        android:icon="@drawable/ic_setting_face"
+        android:key="author"
+        android:summary="@string/setting_author_summary"
+        android:title="@string/setting_author_title">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/fornewid" />
+    </Preference>
+
+</PreferenceScreen>

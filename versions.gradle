@@ -1,13 +1,13 @@
 def deps = [:]
 
-deps.android_gradle_plugin = 'com.android.tools.build:gradle:3.5.0'
-deps.android_material = 'com.google.android.material:material:1.1.0-alpha09'
+deps.android_gradle_plugin = 'com.android.tools.build:gradle:3.5.3'
+deps.android_material = 'com.google.android.material:material:1.2.0-alpha04'
 deps.androidx = [
-        appcompat       : 'androidx.appcompat:appcompat:1.1.0-rc01',
-        core_ktx        : 'androidx.core:core-ktx:1.2.0-alpha03',
+        appcompat       : 'androidx.appcompat:appcompat:1.2.0-alpha02',
+        core_ktx        : 'androidx.core:core-ktx:1.3.0-alpha01',
         constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3',
-        fragment_ktx    : 'androidx.fragment:fragment-ktx:1.2.0-alpha02',
-        preference_ktx  : 'androidx.preference:preference-ktx:1.1.0-rc01',
+        fragment_ktx    : 'androidx.fragment:fragment-ktx:1.2.2',
+        preference_ktx  : 'androidx.preference:preference-ktx:1.1.0',
         test            : [
                 junit   : 'androidx.test.ext:junit:1.1.1',
                 espresso: [
@@ -16,13 +16,13 @@ deps.androidx = [
         ]
 ]
 
-def kotlin = '1.3.50'
+def kotlin = '1.3.61'
 deps.kotlin = [
         stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
         plugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
 ]
 
-def dagger = "2.23.2"
+def dagger = "2.26"
 deps.dagger = [
         runtime          : "com.google.dagger:dagger:$dagger",
         android          : "com.google.dagger:dagger-android:$dagger",
@@ -50,18 +50,3 @@ build_versions.build_tools = '28.0.3'
 build_versions.versionCode = 1
 build_versions.versionName = '0.1.0'
 ext.build_versions = build_versions
-
-static def addProjectRepositories(RepositoryHandler handler) {
-    handler.google()
-    handler.jcenter()
-    handler.maven { url 'https://maven.fabric.io/public' }
-}
-
-ext.addProjectRepositories = this.&addProjectRepositories
-
-static def addAppRepositories(RepositoryHandler handler) {
-    handler.google()
-    handler.jcenter()
-}
-
-ext.addAppRepositories = this.&addAppRepositories

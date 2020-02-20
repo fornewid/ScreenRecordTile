@@ -2,44 +2,30 @@ package soup.tile.screenrecord.record
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Point
-import android.media.MediaFormat
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
-import android.util.Size
 import android.widget.Space
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import soup.tile.screenrecord.R
-import soup.tile.screenrecord.storage.FileData
-import soup.tile.screenrecord.storage.FileFactory
 import soup.tile.screenrecord.util.toast
 
 class ScreenRecordActivity : Activity() {
 
     private lateinit var mediaProjectionManager: MediaProjectionManager
-    private lateinit var screenSize: Size
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(Space(this))
         mediaProjectionManager = getSystemService()!!
-        screenSize = getFullscreenSize()
 
         if (hasPermissions()) {
             requestMediaProjection()
         } else {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS)
         }
-    }
-
-    private fun getFullscreenSize(): Size {
-        return Point()
-            .apply(windowManager.defaultDisplay::getRealSize)
-            .run { Size(x, y) }
     }
 
     override fun onRequestPermissionsResult(
@@ -75,23 +61,10 @@ class ScreenRecordActivity : Activity() {
         if (requestCode == REQUEST_MEDIA_PROJECTION) {
             data?.let { mediaProjectionManager.getMediaProjection(resultCode, it) }
                 ?.let { mediaProjection ->
-                    ScreenRecordManager.record(
-                        mediaProjection,
-                        createNewFile(screenSize)
-                    )
+                    ScreenRecordManager.record(mediaProjection, this)
                 }
             finish()
         }
-    }
-
-    private fun Context.createNewFile(screen: Size): FileData {
-        val timestamp = System.currentTimeMillis()
-        return FileData(
-            file = FileFactory.createNewFile(this, timestamp),
-            size = screen,
-            timestamp = timestamp,
-            mimeType = MediaFormat.MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
-        )
     }
 
     companion object {

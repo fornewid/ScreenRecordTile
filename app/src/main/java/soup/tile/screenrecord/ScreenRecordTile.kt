@@ -1,15 +1,16 @@
 package soup.tile.screenrecord
 
 import android.content.Intent
-import android.net.Uri
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import dagger.android.AndroidInjection
 import soup.tile.screenrecord.record.ScreenRecordActivity
 import soup.tile.screenrecord.record.ScreenRecordManager
 import soup.tile.screenrecord.setting.SettingStorage
-import soup.tile.screenrecord.storage.FileData
 import soup.tile.screenrecord.storage.MediaStorage
+import timber.log.Timber
+import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 
 class ScreenRecordTile : TileService() {
@@ -32,14 +33,25 @@ class ScreenRecordTile : TileService() {
                 updateTileUi(isRecording)
             }
 
-            override fun onScreenRecordFileSaved(output: FileData) {
-                mediaStorage.insertVideo(output)
-                    ?.let(notifications::showSaveState)
+            override fun onScreenRecordFileSaved(output: File) {
+                val uri = mediaStorage.insertVideo()
+                if (uri != null) {
+                    try { // Add to the mediastore
+                        contentResolver.openOutputStream(uri, "w")?.use { os ->
+                            output.inputStream().copyTo(os)
+                        }
+                        output.delete()
 
-                val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    .addCategory(Intent.CATEGORY_DEFAULT)
-                    .setData(Uri.fromFile(output.file))
-                sendBroadcast(intent)
+                        notifications.showSaveState(uri)
+
+                        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                            .addCategory(Intent.CATEGORY_DEFAULT)
+                            .setData(uri)
+                        sendBroadcast(intent)
+                    } catch (e: IOException) {
+                        Timber.e("Error saving screen recording: " + e.message)
+                    }
+                }
             }
         })
     }

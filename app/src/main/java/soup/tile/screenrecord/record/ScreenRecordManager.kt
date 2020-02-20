@@ -1,26 +1,40 @@
 package soup.tile.screenrecord.record
 
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.hardware.display.VirtualDisplay
+import android.media.MediaRecorder
 import android.media.projection.MediaProjection
-import soup.tile.screenrecord.storage.FileData
+import android.os.Build
+import android.util.DisplayMetrics
+import android.view.Surface
+import timber.log.Timber
+import java.io.File
+import java.io.IOException
 
 object ScreenRecordManager {
+
+    private const val VIDEO_BIT_RATE = 25000000
+    private const val VIDEO_FRAME_RATE = 60
+
+    private var mediaProjection: MediaProjection? = null
+    private var mediaRecorder: MediaRecorder? = null
+    private var inputSurface: Surface? = null
+    private var virtualDisplay: VirtualDisplay? = null
+
+    private var listener: Listener? = null
 
     interface Listener {
 
         fun onScreenRecordStateChanged(isRecording: Boolean)
 
-        fun onScreenRecordFileSaved(output: FileData)
+        fun onScreenRecordFileSaved(output: File)
     }
-
-    private var mediaProjection: MediaProjection? = null
-    private var recorder: ScreenRecord? = null
-
-    private var listener: Listener? = null
 
     private val projectionCallback = object : MediaProjection.Callback() {
 
         override fun onStop() {
-            stopRecorder()
+            stopRecording()
         }
     }
 
@@ -28,60 +42,82 @@ object ScreenRecordManager {
         this.listener = listener
     }
 
-    fun record(mediaProjection: MediaProjection, output: FileData) {
+    fun record(mediaProjection: MediaProjection, context: Context) {
         this.mediaProjection = mediaProjection.apply {
             registerCallback(projectionCallback, null)
-            recorder = createScreenRecorder(output).apply {
-                start()
-            }
         }
+        startRecording(context)
     }
 
     fun stop() {
-        stopRecorder()
+        stopRecording()
     }
 
     fun isRecording(): Boolean {
-        return recorder != null
+        return mediaRecorder != null
     }
 
-    private fun MediaProjection.createScreenRecorder(output: FileData): ScreenRecord {
-        return ScreenRecord(this, output, object : ScreenRecord.Callback {
+    private lateinit var tempFile: File
 
-            override fun onStart() {
-//                notifications.recording(0)
-                listener?.onScreenRecordStateChanged(true)
-            }
+    private fun startRecording(context: Context) {
+        try {
+            tempFile = File.createTempFile("temp", ".mp4")
+            Timber.d("Writing video output to: " + tempFile.absolutePath)
+            // Set up media recorder
+            mediaRecorder = MediaRecorder().apply {
+                setVideoSource(MediaRecorder.VideoSource.SURFACE)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
 
-            override fun onStop() {
-                stopRecorder()
-
-                listener?.run {
-                    onScreenRecordStateChanged(false)
-                    onScreenRecordFileSaved(output)
+                // Set up video
+                val metrics: DisplayMetrics = context.resources.displayMetrics
+                val screenWidth = metrics.widthPixels
+                val screenHeight = metrics.heightPixels
+                setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+                setVideoSize(screenWidth, screenHeight)
+                setVideoFrameRate(VIDEO_FRAME_RATE)
+                setVideoEncodingBitRate(VIDEO_BIT_RATE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    setOutputFile(tempFile)
+                } else {
+                    setOutputFile(tempFile.absolutePath)
                 }
-            }
+                prepare()
 
-            override fun onError(throwable: Throwable?) {
-                stopRecorder()
-                output.file.delete()
-
-                listener?.onScreenRecordStateChanged(false)
+                // Create surface
+                inputSurface = surface
+                virtualDisplay = mediaProjection?.createVirtualDisplay(
+                    "Recording Display",
+                    screenWidth,
+                    screenHeight,
+                    metrics.densityDpi,
+                    DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                    inputSurface,
+                    null,
+                    null
+                )
+                start()
             }
-
-            override fun onRecording(presentationTimeUs: Long) {
-//                notifications.recording(presentationTimeUs / 1000)
-            }
-        })
+            listener?.onScreenRecordStateChanged(true)
+        } catch (e: IOException) {
+            Timber.e(e, "Error starting screen recording: " + e.message)
+            listener?.onScreenRecordStateChanged(false)
+        }
     }
 
-    private fun stopRecorder() {
-        if (recorder == null) return
-        recorder?.stop()
-        recorder = null
+    private fun stopRecording() {
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+        mediaRecorder = null
 
         mediaProjection?.unregisterCallback(projectionCallback)
         mediaProjection?.stop()
         mediaProjection = null
+        inputSurface?.release()
+        virtualDisplay?.release()
+
+        listener?.run {
+            onScreenRecordStateChanged(false)
+            onScreenRecordFileSaved(tempFile)
+        }
     }
 }

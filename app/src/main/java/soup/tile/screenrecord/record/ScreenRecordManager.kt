@@ -1,12 +1,10 @@
 package soup.tile.screenrecord.record
 
-import android.content.Context
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.os.Build
-import android.util.DisplayMetrics
 import android.view.Surface
 import timber.log.Timber
 import java.io.File
@@ -42,11 +40,11 @@ object ScreenRecordManager {
         this.listener = listener
     }
 
-    fun record(mediaProjection: MediaProjection, context: Context) {
+    fun record(mediaProjection: MediaProjection, screenInfo: ScreenInfo) {
         this.mediaProjection = mediaProjection.apply {
             registerCallback(projectionCallback, null)
         }
-        startRecording(context)
+        startRecording(screenInfo)
     }
 
     fun stop() {
@@ -59,7 +57,7 @@ object ScreenRecordManager {
 
     private lateinit var tempFile: File
 
-    private fun startRecording(context: Context) {
+    private fun startRecording(screenInfo: ScreenInfo) {
         try {
             tempFile = File.createTempFile("temp", ".mp4")
             Timber.d("Writing video output to: " + tempFile.absolutePath)
@@ -69,9 +67,8 @@ object ScreenRecordManager {
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
 
                 // Set up video
-                val metrics: DisplayMetrics = context.resources.displayMetrics
-                val screenWidth = metrics.widthPixels
-                val screenHeight = metrics.heightPixels
+                val screenWidth = screenInfo.width
+                val screenHeight = screenInfo.height
                 setVideoEncoder(MediaRecorder.VideoEncoder.H264)
                 setVideoSize(screenWidth, screenHeight)
                 setVideoFrameRate(VIDEO_FRAME_RATE)
@@ -89,7 +86,7 @@ object ScreenRecordManager {
                     "Recording Display",
                     screenWidth,
                     screenHeight,
-                    metrics.densityDpi,
+                    screenInfo.densityDpi,
                     DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                     inputSurface,
                     null,

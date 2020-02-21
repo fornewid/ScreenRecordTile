@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import android.widget.Space
@@ -15,17 +16,25 @@ import soup.tile.screenrecord.util.toast
 class ScreenRecordActivity : Activity() {
 
     private lateinit var mediaProjectionManager: MediaProjectionManager
+    private lateinit var screenInfo: ScreenInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(Space(this))
         mediaProjectionManager = getSystemService()!!
+        screenInfo = calculateScreenInfo()
 
         if (hasPermissions()) {
             requestMediaProjection()
         } else {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS)
         }
+    }
+
+    private fun calculateScreenInfo(): ScreenInfo {
+        return Point()
+            .apply(windowManager.defaultDisplay::getRealSize)
+            .run { ScreenInfo(x, y, resources.displayMetrics.densityDpi) }
     }
 
     override fun onRequestPermissionsResult(
@@ -61,7 +70,7 @@ class ScreenRecordActivity : Activity() {
         if (requestCode == REQUEST_MEDIA_PROJECTION) {
             data?.let { mediaProjectionManager.getMediaProjection(resultCode, it) }
                 ?.let { mediaProjection ->
-                    ScreenRecordManager.record(mediaProjection, this)
+                    ScreenRecordManager.record(mediaProjection, screenInfo)
                 }
             finish()
         }

@@ -1,6 +1,6 @@
 def deps = [:]
 
-deps.android_gradle_plugin = 'com.android.tools.build:gradle:3.5.3'
+deps.android_gradle_plugin = 'com.android.tools.build:gradle:3.6.0'
 deps.android_material = 'com.google.android.material:material:1.2.0-alpha04'
 deps.androidx = [
         appcompat       : 'androidx.appcompat:appcompat:1.2.0-alpha02',

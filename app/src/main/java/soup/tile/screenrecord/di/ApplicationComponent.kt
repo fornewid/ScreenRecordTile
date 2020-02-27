@@ -11,8 +11,7 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     ApplicationModule::class,
     ActivityBindingModule::class,
-    ServiceBindingModule::class,
-    StorageModule::class
+    ServiceBindingModule::class
 ])
 interface ApplicationComponent : AndroidInjector<ScreenRecordApplication> {
 

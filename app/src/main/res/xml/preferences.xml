@@ -11,22 +11,7 @@
     <PreferenceCategory
         android:key="category_status_bar"
         android:title="@string/setting_category_status_bar">
-<!-- TODO:
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:icon="@drawable/ic_setting_fake_status_bar"
-            android:key="@string/pref_fake_status_bar"
-            android:summary="@string/setting_fake_status_bar_summary"
-            android:title="@string/setting_fake_status_bar_title" />
-        <SwitchPreferenceCompatEx
-            android:defaultValue="false"
-            android:dependency="@string/pref_fake_status_bar"
-            android:icon="@drawable/ic_setting_fake_status_bar_timer"
-            android:key="@string/pref_fake_status_bar_timer"
-            android:summary="@string/setting_fake_status_bar_timer_summary"
-            android:title="@string/setting_fake_status_bar_timer_title"
-            app:dependencyChecked="false" />
--->
+
         <Preference
             android:icon="@drawable/ic_setting_demo_mode"
             android:key="demo_mode"

@@ -6,7 +6,6 @@ import android.service.quicksettings.TileService
 import dagger.android.AndroidInjection
 import soup.tile.screenrecord.record.ScreenRecordActivity
 import soup.tile.screenrecord.record.ScreenRecordManager
-import soup.tile.screenrecord.setting.SettingStorage
 import soup.tile.screenrecord.storage.MediaStorage
 import timber.log.Timber
 import java.io.File
@@ -17,9 +16,6 @@ class ScreenRecordTile : TileService() {
 
     @Inject
     lateinit var notifications: Notifications
-
-    @Inject
-    lateinit var settingStorage: SettingStorage
 
     @Inject
     lateinit var mediaStorage: MediaStorage

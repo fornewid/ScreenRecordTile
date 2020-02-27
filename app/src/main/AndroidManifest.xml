@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="soup.tile.screenrecord">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -35,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".record.ScreenRecordActivity"
+            android:name=".ScreenRecordActivity"
             android:configChanges="screenLayout|screenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
@@ -54,9 +56,8 @@
             </intent-filter>
         </service>
 
-        <receiver
-            android:name=".Notifications$DeleteScreenRecordReceiver"
-            android:exported="false" />
+        <service android:name=".RecordingService" />
+
     </application>
 
 </manifest>

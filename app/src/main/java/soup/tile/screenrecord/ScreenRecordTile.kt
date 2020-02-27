@@ -1,55 +1,22 @@
 package soup.tile.screenrecord
 
-import android.content.Intent
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import androidx.core.app.ActivityCompat
 import dagger.android.AndroidInjection
-import soup.tile.screenrecord.record.ScreenRecordActivity
-import soup.tile.screenrecord.record.ScreenRecordManager
-import soup.tile.screenrecord.storage.MediaStorage
-import timber.log.Timber
-import java.io.File
-import java.io.IOException
-import javax.inject.Inject
 
 class ScreenRecordTile : TileService() {
 
-    @Inject
-    lateinit var notifications: Notifications
+    private val listener = object : OnRecordStateListener {
 
-    @Inject
-    lateinit var mediaStorage: MediaStorage
+        override fun onRecordStateChanged(isRecording: Boolean) {
+            updateTileUi(isRecording)
+        }
+    }
 
     override fun onCreate() {
         AndroidInjection.inject(this)
         super.onCreate()
-        ScreenRecordManager.setListener(object : ScreenRecordManager.Listener {
-
-            override fun onScreenRecordStateChanged(isRecording: Boolean) {
-                updateTileUi(isRecording)
-            }
-
-            override fun onScreenRecordFileSaved(output: File) {
-                val uri = mediaStorage.insertVideo()
-                if (uri != null) {
-                    try { // Add to the mediastore
-                        contentResolver.openOutputStream(uri, "w")?.use { os ->
-                            output.inputStream().copyTo(os)
-                        }
-                        output.delete()
-
-                        notifications.showSaveState(uri)
-
-                        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                            .addCategory(Intent.CATEGORY_DEFAULT)
-                            .setData(uri)
-                        sendBroadcast(intent)
-                    } catch (e: IOException) {
-                        Timber.e("Error saving screen recording: " + e.message)
-                    }
-                }
-            }
-        })
     }
 
     override fun onTileAdded() {
@@ -59,22 +26,24 @@ class ScreenRecordTile : TileService() {
 
     override fun onTileRemoved() {
         super.onTileRemoved()
-        if (ScreenRecordManager.isRecording()) {
-            ScreenRecordManager.stop()
+        if (RecordingStateManager.isRecording()) {
+            ActivityCompat.startForegroundService(this, RecordingService.getStopIntent(this))
         }
     }
 
     override fun onStartListening() {
         super.onStartListening()
         updateTileUi()
+        RecordingStateManager.addListener(listener)
     }
 
     override fun onStopListening() {
         super.onStopListening()
         updateTileUi()
+        RecordingStateManager.removeListener(listener)
     }
 
-    private fun updateTileUi(isRecording: Boolean = ScreenRecordManager.isRecording()) {
+    private fun updateTileUi(isRecording: Boolean = RecordingStateManager.isRecording()) {
         val oldState = qsTile.state
         val newState = if (isRecording) {
             Tile.STATE_ACTIVE
@@ -93,16 +62,13 @@ class ScreenRecordTile : TileService() {
     }
 
     override fun onClick() {
-        if (ScreenRecordManager.isRecording()) {
-            ScreenRecordManager.stop()
+        if (RecordingStateManager.isRecording()) {
+            ActivityCompat.startForegroundService(this, RecordingService.getStopIntent(this))
             return
         }
 
         val executeAction = {
-            val intent = Intent(this, ScreenRecordActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            startActivityAndCollapse(intent)
+            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = true))
         }
         if (isLocked || isSecure) {
             unlockAndRun(executeAction)

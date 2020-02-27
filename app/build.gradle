@@ -16,13 +16,13 @@ android {
 
         // Define all keys for preferences
 
-        def prefFakeStatusBar = "fake_status_bar"
-        buildConfigField 'String', 'PREF_FAKE_STATUS_BAR', "\"${prefFakeStatusBar}\""
-        resValue("string", "pref_fake_status_bar", prefFakeStatusBar)
+        def prefStartRecord = "start_record"
+        buildConfigField 'String', 'PREF_START_RECORD', "\"${prefStartRecord}\""
+        resValue("string", "pref_start_record", prefStartRecord)
 
-        def prefFakeStatusBarTimer = "fake_status_bar_timer"
-        buildConfigField("String", "PREF_FAKE_STATUS_BAR_TIMER", "\"${prefFakeStatusBarTimer}\"")
-        resValue("string", "pref_fake_status_bar_timer", prefFakeStatusBarTimer)
+        def prefUseAudio = "use_audio"
+        buildConfigField 'String', 'PREF_USE_AUDIO', "\"${prefUseAudio}\""
+        resValue("string", "pref_use_audio", prefUseAudio)
     }
     signingConfigs {
         release {

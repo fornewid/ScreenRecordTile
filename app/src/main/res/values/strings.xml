@@ -1,20 +1,24 @@
 <resources>
     <string name="app_name">ScreenRecordTile</string>
-    <string name="tile_label_default">ScreenRecord</string>
+    <string name="tile_label_default">Record screen</string>
     <string name="tile_label_recording">Recording</string>
-    <string name="permission_not_exist">Please grant storage permission to record screen.</string>
+    <string name="screenrecord_name">Screen Recording</string>
+    <string name="screenrecord_start_label">Start Recording</string>
+    <string name="screenrecord_mic_label">Record screen with audio</string>
+    <string name="screenrecord_stop_label">Stop</string>
+    <string name="screenrecord_cancel_label">Cancel</string>
+    <string name="screenrecord_share_label">Share</string>
+    <string name="screenrecord_delete_label">Delete</string>
+    <string name="screenrecord_cancel_success">Screen recording canceled</string>
+    <string name="screenrecord_save_message">Screen recording saved, tap to view</string>
+    <string name="screenrecord_delete_description">Screen recording deleted</string>
+    <string name="screenrecord_delete_error">Error deleting screen recording</string>
+    <string name="screenrecord_permission_not_granted">Please grant permissions to record screen.</string>
+    <string name="screenrecord_notification_channel">Screen Record</string>
     <string name="setting_title">Screen Record Setting</string>
-    <string name="setting_info_description">This app can record screens with quick setting only. Please add a quick setting for notification bar.</string>
+    <string name="setting_info_description">This app can record screens with quick setting. Please add a quick setting for notification bar.</string>
     <string name="setting_category_status_bar">StatusBar</string>
-    <string name="setting_fake_status_bar_title">Fake StatusBar Mode</string>
-    <string name="setting_fake_status_bar_summary">If this mode is enabled, status bar will be shown on fake during screen recording.</string>
-    <string name="setting_fake_status_bar_timer_title">Fake StatusBar Timer</string>
-    <string name="setting_fake_status_bar_timer_summary">If this mode is enabled, current record time will be shown on status bar clock.</string>
     <string name="setting_demo_mode_title">System UI Demo mode</string>
     <string name="setting_author_title">made by SOUP</string>
     <string name="setting_author_summary">Clicks to see profile.</string>
-    <string name="notification_channel_screen_record">Screen Record</string>
-    <string name="notification_action_delete">Delete</string>
-    <string name="screen_record_saved_title">Screen record saved</string>
-    <string name="screen_record_saved_text">Tap to view your screen record</string>
 </resources>

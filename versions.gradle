@@ -22,15 +22,6 @@ deps.kotlin = [
         plugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
 ]
 
-def dagger = "2.26"
-deps.dagger = [
-        runtime          : "com.google.dagger:dagger:$dagger",
-        android          : "com.google.dagger:dagger-android:$dagger",
-        android_support  : "com.google.dagger:dagger-android-support:$dagger",
-        compiler         : "com.google.dagger:dagger-compiler:$dagger",
-        android_processor: "com.google.dagger:dagger-android-processor:$dagger"
-]
-
 deps.util = [
         timber: 'com.jakewharton.timber:timber:4.7.1'
 ]

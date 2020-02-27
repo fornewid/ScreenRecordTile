@@ -3,7 +3,6 @@ package soup.tile.screenrecord
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.core.app.ActivityCompat
-import dagger.android.AndroidInjection
 
 class ScreenRecordTile : TileService() {
 
@@ -12,11 +11,6 @@ class ScreenRecordTile : TileService() {
         override fun onRecordStateChanged(isRecording: Boolean) {
             updateTileUi(isRecording)
         }
-    }
-
-    override fun onCreate() {
-        AndroidInjection.inject(this)
-        super.onCreate()
     }
 
     override fun onTileAdded() {

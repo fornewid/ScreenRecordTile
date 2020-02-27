@@ -35,14 +35,13 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import dagger.android.DaggerService;
 import soup.tile.screenrecord.storage.MediaStorage;
 import timber.log.Timber;
 
 import static soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID;
 import static soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID;
 
-public class RecordingService extends DaggerService {
+public class RecordingService extends Service {
     private static final String EXTRA_RESULT_CODE = "extra_resultCode";
     private static final String EXTRA_DATA = "extra_data";
     private static final String EXTRA_PATH = "extra_path";

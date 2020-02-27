@@ -61,7 +61,6 @@ dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.androidx.appcompat
     implementation deps.androidx.core_ktx
-    implementation deps.androidx.constraintlayout
     implementation deps.androidx.fragment_ktx
     implementation deps.androidx.preference_ktx
     implementation deps.android_material

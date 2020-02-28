@@ -6,6 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import soup.tile.screenrecord.*
+import soup.tile.screenrecord.BuildConfig.*
 
 class SettingFragment : PreferenceFragmentCompat() {
 
@@ -18,17 +19,17 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-        findPreference<Preference>("current_version")?.summary = BuildConfig.VERSION_NAME
+        findPreference<Preference>(PREF_CURRENT_VERSION)?.summary = VERSION_NAME
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference?.key == BuildConfig.PREF_START_RECORD) {
+        if (preference?.key == PREF_START_RECORD) {
             if (RecordingStateManager.isRecording()) {
                 context?.run {
                     ActivityCompat.startForegroundService(this, RecordingService.getStopIntent(this))
                 }
             } else {
-                val useAudioPref = findPreference<SwitchPreference>(BuildConfig.PREF_USE_AUDIO)
+                val useAudioPref = findPreference<SwitchPreference>(PREF_USE_AUDIO)
                 val useAudio = useAudioPref?.isChecked == true
                 startActivity(ScreenRecordActivity.getStartIntent(requireContext(), useAudio))
             }

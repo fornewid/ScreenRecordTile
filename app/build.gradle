@@ -21,6 +21,10 @@ android {
         def prefUseAudio = "use_audio"
         buildConfigField 'String', 'PREF_USE_AUDIO', "\"${prefUseAudio}\""
         resValue("string", "pref_use_audio", prefUseAudio)
+
+        def prefCurrentVersion = "current_version"
+        buildConfigField 'String', 'PREF_CURRENT_VERSION', "\"${prefCurrentVersion}\""
+        resValue("string", "pref_current_version", prefCurrentVersion)
     }
     signingConfigs {
         release {

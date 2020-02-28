@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion build_versions.compile_sdk
@@ -59,8 +57,8 @@ android {
 dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.androidx.core_ktx
-    implementation deps.androidx.fragment_ktx
-    implementation deps.androidx.preference_ktx
+    implementation deps.androidx.fragment
+    implementation deps.androidx.preference
 
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'

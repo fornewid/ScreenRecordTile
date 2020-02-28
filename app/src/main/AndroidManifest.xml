@@ -47,7 +47,6 @@
             android:configChanges="screenLayout|screenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ScreenRecord" />
 
         <service

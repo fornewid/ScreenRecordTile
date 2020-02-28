@@ -52,7 +52,7 @@ class SettingFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateStartRecordButton(isRecording: Boolean) {
-        val startRecordPref = findPreference<Preference>(BuildConfig.PREF_START_RECORD)
+        val startRecordPref = findPreference<Preference>(PREF_START_RECORD)
         if (startRecordPref != null) {
             if (isRecording) {
                 startRecordPref.setIcon(R.drawable.ic_setting_stop)
@@ -61,7 +61,7 @@ class SettingFragment : PreferenceFragmentCompat() {
                 startRecordPref.setIcon(R.drawable.ic_setting_record)
                 startRecordPref.setTitle(R.string.screenrecord_start_label)
             }
-            val useAudioPref = findPreference<SwitchPreference>(BuildConfig.PREF_USE_AUDIO)
+            val useAudioPref = findPreference<SwitchPreference>(PREF_USE_AUDIO)
             useAudioPref?.isEnabled = isRecording.not()
         }
     }

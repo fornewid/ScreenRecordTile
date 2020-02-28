@@ -78,7 +78,4 @@ class ScreenRecordTile : TileService() {
             executeAction()
         }
     }
-
-    // 00:00
-    // val time = DateUtils.formatElapsedTime(timeMs / 1000)
 }

@@ -26,7 +26,7 @@ import androidx.core.os.postDelayed
 import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
 import soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID
-import soup.tile.screenrecord.storage.FileFactory
+import soup.tile.screenrecord.util.FileFactory
 import soup.tile.screenrecord.util.toast
 import timber.log.Timber
 import java.io.File
@@ -289,7 +289,7 @@ class RecordingService : Service() {
 
     private fun saveRecording() {
         val timeMillis = System.currentTimeMillis()
-        val fileName = FileFactory.createNewFile(this, timeMillis).name
+        val fileName = FileFactory.fileName(timeMillis)
         val contentValues = ContentValues().apply {
             put(MediaStore.Video.VideoColumns.DISPLAY_NAME, fileName)
             put(MediaStore.Video.VideoColumns.DATE_ADDED, timeMillis)

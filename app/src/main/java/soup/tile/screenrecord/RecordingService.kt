@@ -69,7 +69,7 @@ class RecordingService : Service() {
                 if (tempFile.delete()) {
                     toast(R.string.screenrecord_cancel_success)
                 } else {
-                    toast(R.string.screenrecord_delete_error)
+                    toast(R.string.screenrecord_error)
                 }
 
                 // Close quick shade
@@ -301,7 +301,7 @@ class RecordingService : Service() {
         }
         val itemUri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues)
         if (itemUri == null) {
-            toast(R.string.screenrecord_delete_error)
+            toast(R.string.screenrecord_error)
             return
         }
         try { // Add to the mediastore
@@ -312,7 +312,7 @@ class RecordingService : Service() {
             tempFile.delete()
         } catch (e: IOException) {
             Timber.e(e,"Error saving screen recording: ${e.message}")
-            toast(R.string.screenrecord_delete_error)
+            toast(R.string.screenrecord_error)
         }
     }
 

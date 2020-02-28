@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">ScreenRecordTile</string>
+    <string name="app_name">Screen Recording</string>
     <string name="tile_label_default">Record screen</string>
     <string name="tile_label_recording">Recording</string>
     <string name="screenrecord_name">Screen Recording</string>
     <string name="screenrecord_start_label">Start Recording</string>
-    <string name="screenrecord_mic_label">Record screen with audio</string>
+    <string name="screenrecord_mic_label">Record voiceover</string>
     <string name="screenrecord_stop_label">Stop</string>
     <string name="screenrecord_cancel_label">Cancel</string>
     <string name="screenrecord_share_label">Share</string>
@@ -12,13 +12,14 @@
     <string name="screenrecord_cancel_success">Screen recording canceled</string>
     <string name="screenrecord_save_message">Screen recording saved, tap to view</string>
     <string name="screenrecord_delete_description">Screen recording deleted</string>
-    <string name="screenrecord_delete_error">Error deleting screen recording</string>
+    <string name="screenrecord_error">An error occurred in progress</string>
     <string name="screenrecord_permission_not_granted">Please grant permissions to record screen.</string>
     <string name="screenrecord_notification_channel">Screen Record</string>
     <string name="setting_title">Screen Record Setting</string>
     <string name="setting_info_description">This app can record screens with quick setting. Please add a quick setting for notification bar.</string>
     <string name="setting_category_status_bar">StatusBar</string>
     <string name="setting_demo_mode_title">System UI Demo mode</string>
-    <string name="setting_author_title">made by SOUP</string>
-    <string name="setting_author_summary">Clicks to see profile.</string>
+    <string name="setting_category_info">Info</string>
+    <string name="setting_version_title">Current version</string>
+    <string name="setting_author_title">Creator</string>
 </resources>

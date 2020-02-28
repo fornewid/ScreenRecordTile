@@ -33,14 +33,39 @@
 
     </PreferenceCategory>
 
-    <Preference
-        android:icon="@drawable/ic_setting_face"
-        android:key="author"
-        android:summary="@string/setting_author_summary"
-        android:title="@string/setting_author_title">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://github.com/fornewid" />
-    </Preference>
+    <PreferenceCategory
+        android:key="category_info"
+        android:title="@string/setting_category_info">
+
+        <Preference
+            android:icon="@drawable/ic_setting_playstore"
+            android:key="current_version"
+            android:title="@string/setting_version_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="market://details?id=soup.tile.screenrecord" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_setting_github"
+            android:key="github"
+            android:summary="ScreenRecordTile"
+            android:title="Github">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/fornewid/ScreenRecordTile" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_setting_face"
+            android:key="author"
+            android:summary="SOUP"
+            android:title="@string/setting_author_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/fornewid" />
+        </Preference>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

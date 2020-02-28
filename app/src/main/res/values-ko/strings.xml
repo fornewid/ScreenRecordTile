@@ -4,7 +4,7 @@
     <string name="tile_label_recording">화면 녹화중</string>
     <string name="screenrecord_name">"화면 녹화"</string>
     <string name="screenrecord_start_label">"녹화 시작"</string>
-    <string name="screenrecord_mic_label">"소리와 함께 화면 녹화하기"</string>
+    <string name="screenrecord_mic_label">"음성 녹음"</string>
     <string name="screenrecord_stop_label">"중지"</string>
     <string name="screenrecord_cancel_label">"취소"</string>
     <string name="screenrecord_share_label">"공유"</string>
@@ -12,13 +12,14 @@
     <string name="screenrecord_cancel_success">"화면 녹화가 취소되었습니다."</string>
     <string name="screenrecord_save_message">"화면 녹화본이 저장되었습니다. 확인하려면 탭하세요."</string>
     <string name="screenrecord_delete_description">"화면 녹화가 삭제되었습니다."</string>
-    <string name="screenrecord_delete_error">"화면 녹화는 삭제하는 중에 오류가 발생했습니다."</string>
+    <string name="screenrecord_error">"진행하던 중 오류가 발생했습니다."</string>
     <string name="screenrecord_permission_not_granted">화면을 녹화하려면 권한을 허용해주세요.</string>
     <string name="screenrecord_notification_channel">화면 녹화</string>
     <string name="setting_title">화면 녹화 설정</string>
     <string name="setting_info_description">이 앱은 빠른 설정으로 화면을 녹화할 수 있습니다. 상단 알림창을 내려서 빠른 설정을 추가해보세요.</string>
     <string name="setting_category_status_bar">상태표시줄</string>
     <string name="setting_demo_mode_title">시스템 UI 데모 모드</string>
-    <string name="setting_author_title">made by SOUP</string>
-    <string name="setting_author_summary">프로필을 보려면 클릭하세요.</string>
+    <string name="setting_category_info">정보</string>
+    <string name="setting_version_title">현재 버전</string>
+    <string name="setting_author_title">만든 사람</string>
 </resources>

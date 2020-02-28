@@ -44,7 +44,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Wallpaper" />
+            android:theme="@style/AppTheme.ScreenRecord" />
 
         <service
             android:name=".ScreenRecordTile"

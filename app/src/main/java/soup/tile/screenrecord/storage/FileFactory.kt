@@ -13,10 +13,14 @@ object FileFactory {
     private const val FILE_DATE_FORMAT = "yyyyMMdd-HHmmss"
 
     fun createNewFile(context: Context, timestamp: Long): File {
-        return ExternalStorage(context)
-            .getDir(Environment.DIRECTORY_PICTURES)
+        return context
+            .getExternalDir(Environment.DIRECTORY_MOVIES)
             .childDir(fileName = NAME_DIR)
             .child(fileName = fileName(timestamp))
+    }
+
+    private fun Context.getExternalDir(type: String): File {
+        return Environment.getExternalStoragePublicDirectory(type)
     }
 
     private fun fileName(timestamp: Long): String {

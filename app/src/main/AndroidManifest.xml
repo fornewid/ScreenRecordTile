@@ -60,7 +60,9 @@
 
         <service
             android:name=".RecordingService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            tools:targetApi="q" />
 
     </application>
 

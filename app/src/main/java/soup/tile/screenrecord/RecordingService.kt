@@ -2,6 +2,7 @@ package soup.tile.screenrecord
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
@@ -18,7 +19,6 @@ import android.util.Size
 import android.view.Surface
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
-import androidx.core.content.contentValuesOf
 import androidx.core.graphics.drawable.IconCompat
 import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
@@ -57,6 +57,7 @@ class RecordingService : Service() {
                 val resultCode = intent.getIntExtra(EXTRA_RESULT_CODE, Activity.RESULT_CANCELED)
                 val data = intent.getParcelableExtra<Intent>(EXTRA_DATA)
                 if (data != null) {
+                    startForeground(NOTIFICATION_ID, createRecordingNotification())
                     mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data)
                     startRecording()
                 }
@@ -168,8 +169,6 @@ class RecordingService : Service() {
             Timber.e(e, "Error starting screen recording: ${e.message}")
             throw RuntimeException(e)
         }
-
-        startForeground(NOTIFICATION_ID, createRecordingNotification())
     }
 
     private fun createRecordingNotification(): Notification {
@@ -194,7 +193,7 @@ class RecordingService : Service() {
                     .getService(
                         this,
                         REQUEST_CODE,
-                        getCancelIntent(),
+                        getCancelIntent(this),
                         PendingIntent.FLAG_UPDATE_CURRENT
                     )
             )
@@ -210,7 +209,7 @@ class RecordingService : Service() {
     }
 
     @SuppressLint("WrongConstant")
-    private fun createSaveNotification(uri: Uri?): Notification {
+    private fun createSaveNotification(uri: Uri): Notification {
         val viewIntent = Intent(Intent.ACTION_VIEW)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
             .setDataAndType(uri, "video/mp4")
@@ -221,7 +220,7 @@ class RecordingService : Service() {
                 PendingIntent.getService(
                     this,
                     REQUEST_CODE,
-                    getShareIntent(uri.toString()),
+                    getShareIntent(this, uri.toString()),
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
@@ -233,7 +232,7 @@ class RecordingService : Service() {
                 PendingIntent.getService(
                     this,
                     REQUEST_CODE,
-                    getDeleteIntent(uri.toString()),
+                    getDeleteIntent(this, uri.toString()),
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
@@ -253,24 +252,24 @@ class RecordingService : Service() {
             .addAction(shareAction)
             .addAction(deleteAction)
             .setAutoCancel(true)
-/* FIXME:
-        // Add thumbnail if available
-        Bitmap thumbnailBitmap = null;
-        try {
-            ContentResolver resolver = getContentResolver();
-            Size size = new Size(512, 384);
-            thumbnailBitmap = resolver.loadThumbnail(uri, size, null);
-        } catch (IOException e) {
-            Timber.e("Error creating thumbnail: " + e.getMessage());
-            e.printStackTrace();
-        }
-        if (thumbnailBitmap != null) {
-            Notification.BigPictureStyle pictureStyle = new Notification.BigPictureStyle()
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Add thumbnail if available
+            try {
+                val resolver = contentResolver
+                val size = Size(512, 384)
+                val thumbnailBitmap = resolver.loadThumbnail(uri, size, null)
+
+                val pictureStyle = NotificationCompat.BigPictureStyle()
                     .bigPicture(thumbnailBitmap)
-                    .bigLargeIcon((Bitmap) null);
-            builder.setLargeIcon(thumbnailBitmap).setStyle(pictureStyle);
+                    .bigLargeIcon(null)
+                builder.setLargeIcon(thumbnailBitmap).setStyle(pictureStyle)
+            } catch (e: IOException) {
+                Timber.e(e, "Error creating thumbnail: ${e.message}")
+            }
         }
- */
+
         return builder.build()
     }
 
@@ -290,15 +289,17 @@ class RecordingService : Service() {
 
     private fun saveRecording() {
         val timeMillis = System.currentTimeMillis()
-        val itemUri = contentResolver.insert(
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-            contentValuesOf(
-                MediaStore.Video.VideoColumns.DISPLAY_NAME to FileFactory.createNewFile(this, timeMillis).name,
-                MediaStore.Video.VideoColumns.DATE_TAKEN to timeMillis,
-                MediaStore.Video.VideoColumns.DATE_ADDED to timeMillis,
-                MediaStore.Video.VideoColumns.MIME_TYPE to "video/mp4"
-            )
-        )
+        val fileName = FileFactory.createNewFile(this, timeMillis).name
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Video.VideoColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.Video.VideoColumns.DATE_ADDED, timeMillis)
+            put(MediaStore.Video.VideoColumns.MIME_TYPE, "video/mp4")
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Video.VideoColumns.DATE_TAKEN, timeMillis)
+            }
+        }
+        val itemUri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues)
         if (itemUri == null) {
             toast(R.string.screenrecord_delete_error)
             return
@@ -355,19 +356,19 @@ class RecordingService : Service() {
                 .setAction(ACTION_STOP)
         }
 
-        private fun Context.getCancelIntent(): Intent {
-            return Intent(this, RecordingService::class.java)
+        private fun getCancelIntent(context: Context): Intent {
+            return Intent(context, RecordingService::class.java)
                 .setAction(ACTION_CANCEL)
         }
 
-        private fun Context.getShareIntent(path: String): Intent {
-            return Intent(this, RecordingService::class.java)
+        private fun getShareIntent(context: Context, path: String): Intent {
+            return Intent(context, RecordingService::class.java)
                 .setAction(ACTION_SHARE)
                 .putExtra(EXTRA_PATH, path)
         }
 
-        private fun Context.getDeleteIntent(path: String): Intent {
-            return Intent(this, RecordingService::class.java)
+        private fun getDeleteIntent(context: Context, path: String): Intent {
+            return Intent(context, RecordingService::class.java)
                 .setAction(ACTION_DELETE)
                 .putExtra(EXTRA_PATH, path)
         }

@@ -24,7 +24,9 @@
             android:name="android.max_aspect"
             android:value="2.4" />
 
-        <activity android:name=".setting.SettingActivity">
+        <activity
+            android:name=".setting.SettingActivity"
+            android:label="@string/setting_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +58,9 @@
             </intent-filter>
         </service>
 
-        <service android:name=".RecordingService" />
+        <service
+            android:name=".RecordingService"
+            android:exported="false" />
 
     </application>
 

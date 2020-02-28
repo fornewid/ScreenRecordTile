@@ -17,7 +17,7 @@ object NotificationInfo {
             val screenRecord = NotificationChannel(
                 CHANNEL_ID,
                 context.getString(R.string.screenrecord_notification_channel),
-                NotificationManager.IMPORTANCE_HIGH
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             context.getSystemService<NotificationManager>()
                 ?.createNotificationChannels(listOf(screenRecord))

@@ -1,16 +1,30 @@
-<img height="200" src='https://github.com/fornewid/ScreenRecordTile/blob/master/app/src/main/ic_launcher-graphic.png'/>
+<p align="center">
+   <img height="200" src='https://github.com/fornewid/ScreenRecordTile/blob/master/app/src/main/ic_launcher-graphic.png'/>
+</p>
 
-# :video_camera: Screen Record Quick Settings Tile
+<h1 align="center">:video_camera: Screen Record Quick Settings Tile</h1><br/>
+<p align="center">
+   A quick settings tile to quickly record screen.<br/>
+   This app runs on Nougat+ devices.
+</p>
+</br>
 
-A quick settings tile to quickly record screen.
+<p align="center">
+   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
+   <a href='https://developer.android.com'><img height="20px" src='http://img.shields.io/badge/platform-android-green.svg'/></a>
+   <a href="https://android-arsenal.com/api?level=24"><img alt="API" src="https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat"/></a>
+   <br/>
+   <a href='https://play.google.com/store/apps/details?id=soup.tile.screenrecord'>
+      <img height="60px" src='https://play.google.com/intl/en/badges/images/generic/en_badge_web_generic.png'/>
+   </a>
+</p>
 
-This app also only runs on Nougat+ devices.
 
-<a href='https://play.google.com/store/apps/details?id=soup.tile.screenrecord'>
-<img height="60px" src='https://play.google.com/intl/en/badges/images/generic/en_badge_web_generic.png'/>
-</a>
+## Demo
 
-<img width="200" src="Screenshots/screenrecord_demo.gif">
+<p align="center">
+   <img width="200" src="Screenshots/screenrecord_demo.gif">
+</p>
 
 ## License
 

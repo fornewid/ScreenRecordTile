@@ -1,6 +1,7 @@
 package soup.tile.screenrecord.setting
 
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -21,9 +22,15 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         if (preference?.key == BuildConfig.PREF_START_RECORD) {
-            val useAudioPref = findPreference<SwitchPreference>(BuildConfig.PREF_USE_AUDIO)
-            val useAudio = useAudioPref?.isChecked == true
-            startActivity(ScreenRecordActivity.getStartIntent(requireContext(), useAudio))
+            if (RecordingStateManager.isRecording()) {
+                context?.run {
+                    ActivityCompat.startForegroundService(this, RecordingService.getStopIntent(this))
+                }
+            } else {
+                val useAudioPref = findPreference<SwitchPreference>(BuildConfig.PREF_USE_AUDIO)
+                val useAudio = useAudioPref?.isChecked == true
+                startActivity(ScreenRecordActivity.getStartIntent(requireContext(), useAudio))
+            }
             return true
         }
         return super.onPreferenceTreeClick(preference)

@@ -3,6 +3,9 @@ package soup.tile.screenrecord
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.core.app.ActivityCompat
+import androidx.preference.PreferenceManager
+import soup.tile.screenrecord.BuildConfig.PREF_USE_AUDIO
+import soup.tile.screenrecord.util.hasMicrophoneFeature
 
 class ScreenRecordTile : TileService() {
 
@@ -11,6 +14,10 @@ class ScreenRecordTile : TileService() {
         override fun onRecordStateChanged(isRecording: Boolean) {
             updateTileUi(isRecording)
         }
+    }
+
+    private val prefs by lazy {
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
     override fun onTileAdded() {
@@ -62,7 +69,8 @@ class ScreenRecordTile : TileService() {
         }
 
         val executeAction = {
-            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = true))
+            val useAudio = hasMicrophoneFeature() && prefs.getBoolean(PREF_USE_AUDIO, false)
+            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = useAudio))
         }
         if (isLocked || isSecure) {
             unlockAndRun(executeAction)

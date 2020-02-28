@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import soup.tile.screenrecord.*
 import soup.tile.screenrecord.BuildConfig.*
+import soup.tile.screenrecord.util.hasMicrophoneFeature
 
 class SettingFragment : PreferenceFragmentCompat() {
 
@@ -19,6 +20,7 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+        findPreference<Preference>(PREF_USE_AUDIO)?.isVisible = context.hasMicrophoneFeature()
         findPreference<Preference>(PREF_CURRENT_VERSION)?.summary = VERSION_NAME
     }
 

@@ -25,6 +25,7 @@ import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
 import soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID
 import soup.tile.screenrecord.util.FileFactory
+import soup.tile.screenrecord.util.MediaStoreCompat
 import soup.tile.screenrecord.util.toast
 import timber.log.Timber
 import java.io.File
@@ -285,15 +286,15 @@ class RecordingService : Service() {
 
     private fun saveRecording() {
         val timeMillis = System.currentTimeMillis()
+        val dateSeconds = timeMillis / 1000
         val fileName = FileFactory.fileName(timeMillis)
         val contentValues = ContentValues().apply {
-            put(MediaStore.Video.VideoColumns.DISPLAY_NAME, fileName)
-            put(MediaStore.Video.VideoColumns.DATE_ADDED, timeMillis)
-            put(MediaStore.Video.VideoColumns.MIME_TYPE, "video/mp4")
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.Video.VideoColumns.DATE_TAKEN, timeMillis)
-            }
+            put(MediaStore.MediaColumns.TITLE, fileName)
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStoreCompat.MediaColumns.DATE_TAKEN, timeMillis)
+            put(MediaStore.MediaColumns.DATE_ADDED, dateSeconds)
+            put(MediaStore.MediaColumns.DATE_MODIFIED, dateSeconds)
+            put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
         }
         val itemUri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues)
         if (itemUri == null) {

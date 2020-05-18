@@ -21,8 +21,6 @@ import android.util.Size
 import android.view.Surface
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.drawable.IconCompat
-import androidx.core.os.postDelayed
 import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
 import soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID
@@ -63,9 +61,7 @@ class RecordingService : Service() {
                     startForeground(NOTIFICATION_ID, createRecordingNotification())
                     mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data)
 
-                    Handler().postDelayed(300) {
-                        startRecording()
-                    }
+                    Handler().postDelayed(::startRecording, 300)
                 }
             }
             ACTION_CANCEL -> {
@@ -180,7 +176,7 @@ class RecordingService : Service() {
     private fun createRecordingNotification(): Notification {
         val stopAction = NotificationCompat.Action
             .Builder(
-                IconCompat.createWithResource(this, R.drawable.ic_android),
+                R.drawable.ic_noti_stop,
                 resources.getString(R.string.screenrecord_stop_label),
                 PendingIntent.getService(
                     this,
@@ -192,7 +188,7 @@ class RecordingService : Service() {
             .build()
         val cancelAction = NotificationCompat.Action
             .Builder(
-                IconCompat.createWithResource(this, R.drawable.ic_android),
+                R.drawable.ic_noti_cancel,
                 resources.getString(R.string.screenrecord_cancel_label),
                 PendingIntent.getService(
                     this,
@@ -218,7 +214,7 @@ class RecordingService : Service() {
             .setDataAndType(uri, "video/mp4")
         val shareAction = NotificationCompat.Action
             .Builder(
-                IconCompat.createWithResource(this, R.drawable.ic_android),
+                R.drawable.ic_noti_share,
                 resources.getString(R.string.screenrecord_share_label),
                 PendingIntent.getService(
                     this,
@@ -230,7 +226,7 @@ class RecordingService : Service() {
             .build()
         val deleteAction = NotificationCompat.Action
             .Builder(
-                IconCompat.createWithResource(this, R.drawable.ic_android),
+                R.drawable.ic_noti_delete,
                 resources.getString(R.string.screenrecord_delete_label),
                 PendingIntent.getService(
                     this,

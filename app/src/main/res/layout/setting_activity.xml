@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container_view"
-    android:name="soup.tile.screenrecord.setting.SettingFragment"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:id="@+id/start_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_record"
+            android:title="@string/screenrecord_start_label" />
+
+        <soup.tile.screenrecord.preference.SwitchPreferenceView
+            android:id="@+id/use_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_setting_audio"
+            android:key="@string/pref_use_audio"
+            android:title="@string/screenrecord_mic_label" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_info"
+            android:summary="@string/setting_info_description" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/preference_list_divider" />
+
+        <soup.tile.screenrecord.preference.PreferenceCategoryView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/setting_category_status_bar" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:id="@+id/demo_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_demo_mode"
+            android:title="@string/setting_demo_mode_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/preference_list_divider" />
+
+        <soup.tile.screenrecord.preference.PreferenceCategoryView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/setting_category_info" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:id="@+id/current_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_playstore"
+            android:title="@string/setting_version_title" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:id="@+id/github"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_github"
+            android:summary="ScreenRecordTile"
+            android:title="Github" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_face"
+            android:summary="SOUP"
+            android:title="@string/setting_author_title" />
+
+    </LinearLayout>
+</ScrollView>

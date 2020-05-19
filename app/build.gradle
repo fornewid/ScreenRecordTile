@@ -15,17 +15,9 @@ android {
 
         // Define all keys for preferences
 
-        def prefStartRecord = "start_record"
-        buildConfigField 'String', 'PREF_START_RECORD', "\"${prefStartRecord}\""
-        resValue("string", "pref_start_record", prefStartRecord)
-
         def prefUseAudio = "use_audio"
         buildConfigField 'String', 'PREF_USE_AUDIO', "\"${prefUseAudio}\""
         resValue("string", "pref_use_audio", prefUseAudio)
-
-        def prefCurrentVersion = "current_version"
-        buildConfigField 'String', 'PREF_CURRENT_VERSION', "\"${prefCurrentVersion}\""
-        resValue("string", "pref_current_version", prefCurrentVersion)
     }
     signingConfigs {
         release {
@@ -64,8 +56,7 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.fragment:fragment:1.2.4'
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
 
     implementation 'com.google.firebase:firebase-analytics:17.4.1'
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'

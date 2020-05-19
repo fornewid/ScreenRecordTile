@@ -9,7 +9,7 @@ import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import android.widget.Space
-import androidx.core.app.ActivityCompat
+import soup.tile.screenrecord.util.startForegroundServiceCompat
 import soup.tile.screenrecord.util.toast
 
 class ScreenRecordActivity : Activity() {
@@ -94,7 +94,7 @@ class ScreenRecordActivity : Activity() {
                 if (resultCode == RESULT_OK) {
                     val useAudio = requestCode == REQUEST_CODE_VIDEO_AUDIO
                     val intent = RecordingService.getStartIntent(this, resultCode, data, useAudio)
-                    ActivityCompat.startForegroundService(this, intent)
+                    startForegroundServiceCompat(intent)
                 } else {
                     toast(R.string.screenrecord_permission_not_granted)
                 }

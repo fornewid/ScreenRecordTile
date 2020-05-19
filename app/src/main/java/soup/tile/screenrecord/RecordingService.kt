@@ -4,7 +4,9 @@ import android.app.*
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Point
+import android.graphics.drawable.Icon
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.MediaMetadataRetriever
@@ -20,12 +22,11 @@ import android.provider.MediaStore
 import android.util.Size
 import android.view.Surface
 import android.view.WindowManager
-import androidx.core.app.NotificationCompat
 import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
 import soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID
 import soup.tile.screenrecord.util.FileFactory
-import soup.tile.screenrecord.util.MediaStoreCompat
+import soup.tile.screenrecord.util.MediaStore_MediaColumns
 import soup.tile.screenrecord.util.toast
 import timber.log.Timber
 import java.io.File
@@ -175,9 +176,9 @@ class RecordingService : Service() {
     }
 
     private fun createRecordingNotification(): Notification {
-        val stopAction = NotificationCompat.Action
+        val stopAction = Notification.Action
             .Builder(
-                R.drawable.ic_noti_stop,
+                Icon.createWithResource(this, R.drawable.ic_noti_stop),
                 resources.getString(R.string.screenrecord_stop_label),
                 PendingIntent.getService(
                     this,
@@ -187,9 +188,9 @@ class RecordingService : Service() {
                 )
             )
             .build()
-        val cancelAction = NotificationCompat.Action
+        val cancelAction = Notification.Action
             .Builder(
-                R.drawable.ic_noti_cancel,
+                Icon.createWithResource(this, R.drawable.ic_noti_cancel),
                 resources.getString(R.string.screenrecord_cancel_label),
                 PendingIntent.getService(
                     this,
@@ -199,7 +200,7 @@ class RecordingService : Service() {
                 )
             )
             .build()
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        return createNotificationBuilder()
             .setSmallIcon(R.drawable.ic_noti_video)
             .setContentTitle(resources.getString(R.string.screenrecord_name))
             .setUsesChronometer(true)
@@ -213,9 +214,9 @@ class RecordingService : Service() {
         val viewIntent = Intent(Intent.ACTION_VIEW)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
             .setDataAndType(uri, "video/mp4")
-        val shareAction = NotificationCompat.Action
+        val shareAction = Notification.Action
             .Builder(
-                R.drawable.ic_noti_share,
+                Icon.createWithResource(this, R.drawable.ic_noti_share),
                 resources.getString(R.string.screenrecord_share_label),
                 PendingIntent.getService(
                     this,
@@ -225,9 +226,9 @@ class RecordingService : Service() {
                 )
             )
             .build()
-        val deleteAction = NotificationCompat.Action
+        val deleteAction = Notification.Action
             .Builder(
-                R.drawable.ic_noti_delete,
+                Icon.createWithResource(this, R.drawable.ic_noti_delete),
                 resources.getString(R.string.screenrecord_delete_label),
                 PendingIntent.getService(
                     this,
@@ -237,7 +238,7 @@ class RecordingService : Service() {
                 )
             )
             .build()
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = createNotificationBuilder()
             .setSmallIcon(R.drawable.ic_noti_video)
             .setContentTitle(resources.getString(R.string.screenrecord_name))
             .setContentText(resources.getString(R.string.screenrecord_save_message))
@@ -259,9 +260,9 @@ class RecordingService : Service() {
                 setDataSource(file.absolutePath)
                 ThumbnailUtils.extractThumbnail(getFrameAtTime(1), 512, 384)
             }
-            val pictureStyle = NotificationCompat.BigPictureStyle()
+            val pictureStyle = Notification.BigPictureStyle()
                 .bigPicture(thumbnailBitmap)
-                .bigLargeIcon(null)
+                .bigLargeIcon(null as Bitmap?)
             builder.setLargeIcon(thumbnailBitmap).setStyle(pictureStyle)
         } catch (e: Exception) {
             Timber.e(e, "Error creating thumbnail: ${e.message}")
@@ -291,7 +292,7 @@ class RecordingService : Service() {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.TITLE, fileName)
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-            put(MediaStoreCompat.MediaColumns.DATE_TAKEN, timeMillis)
+            put(MediaStore_MediaColumns.DATE_TAKEN, timeMillis)
             put(MediaStore.MediaColumns.DATE_ADDED, dateSeconds)
             put(MediaStore.MediaColumns.DATE_MODIFIED, dateSeconds)
             put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
@@ -331,6 +332,14 @@ class RecordingService : Service() {
         private const val VIDEO_FRAME_RATE = 60 //30;
         private const val AUDIO_BIT_RATE = 16
         private const val AUDIO_SAMPLE_RATE = 44100
+
+        private fun Context.createNotificationBuilder(): Notification.Builder {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Notification.Builder(this, CHANNEL_ID)
+            } else {
+                Notification.Builder(this)
+            }
+        }
 
         /**
          * Get an intent to start the recording service.

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorOnBackground" format="color|reference" />
+
+    <declare-styleable name="PreferenceCategoryView">
+        <attr name="android:title" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="PreferenceView">
+        <attr name="android:icon" format="reference" />
+        <attr name="android:title" format="string" />
+        <attr name="android:summary" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchPreferenceView">
+        <attr name="android:icon" format="reference" />
+        <attr name="android:title" format="string" />
+        <attr name="android:summary" format="string" />
+        <attr name="android:key" format="string" />
+        <attr name="android:defaultValue" format="boolean" />
+    </declare-styleable>
 </resources>

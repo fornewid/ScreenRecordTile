@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Base.AppTheme" parent="android:Theme.Material">
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+</resources>

@@ -70,7 +70,7 @@ class ScreenRecordTile : TileService() {
 
         val executeAction = {
             val useAudio = hasMicrophoneFeature() && prefs.getBoolean(PREF_USE_AUDIO, false)
-            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = useAudio))
+            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = useAudio, fromSettings = false))
         }
         if (isLocked || isSecure) {
             unlockAndRun(executeAction)

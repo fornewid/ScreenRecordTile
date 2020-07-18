@@ -35,7 +35,8 @@ class SettingActivity : Activity() {
                 startForegroundServiceCompat(RecordingService.getStopIntent(this))
             } else {
                 val useAudio = useAudioPref?.isChecked() == true
-                startActivity(ScreenRecordActivity.getStartIntent(this, useAudio))
+                startActivity(ScreenRecordActivity.getStartIntent(this, useAudio, fromSettings = true))
+                finish()
             }
         }
 

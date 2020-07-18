@@ -69,6 +69,10 @@ class SettingActivity : Activity() {
             }
             startActivity(intent)
         }
+        val demoModeHelp: View = findViewById(R.id.demo_mode_help)
+        demoModeHelp.setOnClickListener {
+            DemoModeDialog.show(it.context)
+        }
 
         val currentVersion: PreferenceView = findViewById(R.id.current_version)
         currentVersion.setSummary(VERSION_NAME)

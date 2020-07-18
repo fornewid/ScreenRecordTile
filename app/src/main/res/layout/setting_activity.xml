@@ -50,12 +50,27 @@
             android:layout_height="wrap_content"
             android:title="@string/setting_category_status_bar" />
 
-        <soup.tile.screenrecord.preference.PreferenceView
-            android:id="@+id/demo_mode"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_setting_demo_mode"
-            android:title="@string/setting_demo_mode_title" />
+            android:layout_height="wrap_content">
+
+            <soup.tile.screenrecord.preference.PreferenceView
+                android:id="@+id/demo_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_setting_demo_mode"
+                android:title="@string/setting_demo_mode_title" />
+
+            <ImageView
+                android:id="@+id/demo_mode_help"
+                android:layout_width="54dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_setting_help" />
+        </FrameLayout>
 
         <View
             android:layout_width="match_parent"

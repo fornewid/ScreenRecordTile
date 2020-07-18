@@ -24,4 +24,7 @@
     <string name="setting_category_info">Info</string>
     <string name="setting_version_title">Current version</string>
     <string name="setting_author_title">Creator</string>
+    <string name="dialog_demo_mode_title">Demo mode</string>
+    <string name="dialog_demo_mode_desc">When demo mode is on, status bar is shown as demo.</string>
+    <string name="dialog_demo_mode_button">Close</string>
 </resources>

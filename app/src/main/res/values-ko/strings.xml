@@ -24,4 +24,7 @@
     <string name="setting_category_info">정보</string>
     <string name="setting_version_title">현재 버전</string>
     <string name="setting_author_title">만든 사람</string>
+    <string name="dialog_demo_mode_title">데모 모드</string>
+    <string name="dialog_demo_mode_desc">데모 모드가 켜져 있으면 상태표시줄이 데모 상태로 보여집니다.</string>
+    <string name="dialog_demo_mode_button">닫기</string>
 </resources>

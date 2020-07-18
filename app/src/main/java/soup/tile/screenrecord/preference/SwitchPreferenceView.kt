@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import soup.tile.screenrecord.R
 
 class SwitchPreferenceView @JvmOverloads constructor(
@@ -50,7 +49,7 @@ class SwitchPreferenceView @JvmOverloads constructor(
         a.recycle()
     }
 
-    fun setIcon(@DrawableRes resId: Int) {
+    fun setIcon(resId: Int) {
         icon.setImageResource(resId)
     }
 

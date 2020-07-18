@@ -8,13 +8,12 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.annotation.StringRes
 
 inline fun Context.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
     return Toast.makeText(this, text, duration).show()
 }
 
-inline fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) {
+inline fun Context.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT) {
     return Toast.makeText(this, resId, duration).show()
 }
 

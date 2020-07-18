@@ -2,6 +2,7 @@ package soup.tile.screenrecord
 
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import soup.tile.screenrecord.BuildConfig.PREF_RETURN_TO_SETTINGS
 import soup.tile.screenrecord.BuildConfig.PREF_USE_AUDIO
 import soup.tile.screenrecord.preference.defaultSharedPreference
 import soup.tile.screenrecord.util.hasMicrophoneFeature
@@ -70,7 +71,15 @@ class ScreenRecordTile : TileService() {
 
         val executeAction = {
             val useAudio = hasMicrophoneFeature() && prefs.getBoolean(PREF_USE_AUDIO, false)
-            startActivityAndCollapse(ScreenRecordActivity.getStartIntent(this, useAudio = useAudio, fromSettings = false))
+            val returnToSettings = prefs.getBoolean(PREF_RETURN_TO_SETTINGS, false)
+            startActivityAndCollapse(
+                ScreenRecordActivity.getStartIntent(
+                    this,
+                    useAudio = useAudio,
+                    fromSettings = false,
+                    returnToSettings = returnToSettings
+                )
+            )
         }
         if (isLocked || isSecure) {
             unlockAndRun(executeAction)

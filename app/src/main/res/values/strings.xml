@@ -17,6 +17,8 @@
     <string name="screenrecord_notification_channel">Screen Record</string>
     <string name="setting_title">Screen Record Setting</string>
     <string name="setting_info_description">This app can record screens with quick setting. Please add a quick setting for notification bar.</string>
+    <string name="setting_return_title">Return to settings</string>
+    <string name="setting_return_desc">After stopping or canceling the screen recording, you will return to this screen.</string>
     <string name="setting_category_status_bar">StatusBar</string>
     <string name="setting_demo_mode_title">System UI Demo mode</string>
     <string name="setting_category_info">Info</string>

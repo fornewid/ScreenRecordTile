@@ -24,6 +24,7 @@ class SettingActivity : Activity() {
 
     private var startRecordPref: PreferenceView? = null
     private var useAudioPref: SwitchPreferenceView? = null
+    private var returnToSettingsPref: SwitchPreferenceView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,14 @@ class SettingActivity : Activity() {
             if (RecordingStateManager.isRecording()) {
                 startForegroundServiceCompat(RecordingService.getStopIntent(this))
             } else {
-                val useAudio = useAudioPref?.isChecked() == true
-                startActivity(ScreenRecordActivity.getStartIntent(this, useAudio, fromSettings = true))
+                startActivity(
+                    ScreenRecordActivity.getStartIntent(
+                        context = this,
+                        useAudio = useAudioPref?.isChecked() == true,
+                        fromSettings = true,
+                        returnToSettings = returnToSettingsPref?.isChecked() == true
+                    )
+                )
                 finish()
             }
         }
@@ -43,6 +50,13 @@ class SettingActivity : Activity() {
         useAudioPref = findViewById(R.id.use_audio)
         useAudioPref?.apply {
             visibility = if (hasMicrophoneFeature()) View.VISIBLE else View.GONE
+            setOnClickListener {
+                toggle()
+            }
+        }
+
+        returnToSettingsPref = findViewById(R.id.return_to_settings)
+        returnToSettingsPref?.apply {
             setOnClickListener {
                 toggle()
             }

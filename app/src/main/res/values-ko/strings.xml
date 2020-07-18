@@ -17,6 +17,8 @@
     <string name="screenrecord_notification_channel">화면 녹화</string>
     <string name="setting_title">화면 녹화 설정</string>
     <string name="setting_info_description">이 앱은 빠른 설정으로 화면을 녹화할 수 있습니다. 상단 알림창을 내려서 빠른 설정을 추가해보세요.</string>
+    <string name="setting_return_title">설정화면으로 되돌아오기</string>
+    <string name="setting_return_desc">화면 녹화를 중지하거나 취소한 후 이 화면으로 되돌아옵니다.</string>
     <string name="setting_category_status_bar">상태표시줄</string>
     <string name="setting_demo_mode_title">시스템 UI 데모 모드</string>
     <string name="setting_category_info">정보</string>

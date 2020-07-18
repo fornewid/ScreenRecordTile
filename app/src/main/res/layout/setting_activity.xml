@@ -9,6 +9,12 @@
         android:orientation="vertical">
 
         <soup.tile.screenrecord.preference.PreferenceView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_setting_info"
+            android:summary="@string/setting_info_description" />
+
+        <soup.tile.screenrecord.preference.PreferenceView
             android:id="@+id/start_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,11 +30,15 @@
             android:key="@string/pref_use_audio"
             android:title="@string/screenrecord_mic_label" />
 
-        <soup.tile.screenrecord.preference.PreferenceView
+        <soup.tile.screenrecord.preference.SwitchPreferenceView
+            android:id="@+id/return_to_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_setting_info"
-            android:summary="@string/setting_info_description" />
+            android:defaultValue="false"
+            android:icon="@drawable/ic_setting_return"
+            android:key="@string/pref_return_to_settings"
+            android:summary="@string/setting_return_desc"
+            android:title="@string/setting_return_title" />
 
         <View
             android:layout_width="match_parent"

@@ -25,6 +25,7 @@ import android.view.WindowManager
 import soup.tile.screenrecord.RecordingStateManager.setRecording
 import soup.tile.screenrecord.notification.NotificationInfo.CHANNEL_ID
 import soup.tile.screenrecord.notification.NotificationInfo.NOTIFICATION_ID
+import soup.tile.screenrecord.setting.SettingActivity
 import soup.tile.screenrecord.util.FileFactory
 import soup.tile.screenrecord.util.MediaStore_MediaColumns
 import soup.tile.screenrecord.util.toast
@@ -44,6 +45,7 @@ class RecordingService : Service() {
     private var virtualDisplay: VirtualDisplay? = null
     private var mediaRecorder: MediaRecorder? = null
     private var useAudio = false
+    private var returnToSettings = false
     private lateinit var tempFile: File
 
     override fun onBind(intent: Intent): IBinder? {
@@ -57,6 +59,7 @@ class RecordingService : Service() {
         when (intent.action) {
             ACTION_START -> {
                 useAudio = intent.getBooleanExtra(EXTRA_USE_AUDIO, false)
+                returnToSettings = intent.getBooleanExtra(EXTRA_RETURN_TO_SETTINGS, false)
                 val resultCode = intent.getIntExtra(EXTRA_RESULT_CODE, Activity.RESULT_CANCELED)
                 val data = intent.getParcelableExtra<Intent>(EXTRA_DATA)
                 if (data != null) {
@@ -78,10 +81,12 @@ class RecordingService : Service() {
 
                 // Close quick shade
                 sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                returnToSettingsIfNeeds()
             }
             ACTION_STOP -> {
                 stopRecording()
                 saveRecording()
+                returnToSettingsIfNeeds()
             }
             ACTION_SHARE -> {
                 // Close quick shade
@@ -314,11 +319,21 @@ class RecordingService : Service() {
         }
     }
 
+    private fun returnToSettingsIfNeeds() {
+        if (returnToSettings) {
+            startActivity(
+                Intent(this, SettingActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        }
+    }
+
     companion object {
         private const val EXTRA_RESULT_CODE = "extra_resultCode"
         private const val EXTRA_DATA = "extra_data"
         private const val EXTRA_PATH = "extra_path"
         private const val EXTRA_USE_AUDIO = "extra_useAudio"
+        private const val EXTRA_RETURN_TO_SETTINGS = "extra_returnToSettings"
         private const val REQUEST_CODE = 2
 
         private const val ACTION_START = "soup.tile.screenrecord.START"
@@ -348,13 +363,15 @@ class RecordingService : Service() {
          * @param resultCode The result code from [Activity.onActivityResult]
          * @param data       The data from [Activity.onActivityResult]
          * @param useAudio   True to enable microphone input while recording
+         * @param returnToSettings True to return to settings after stop or cancel
          */
-        fun getStartIntent(context: Context, resultCode: Int, data: Intent?, useAudio: Boolean): Intent {
+        fun getStartIntent(context: Context, resultCode: Int, data: Intent?, useAudio: Boolean, returnToSettings: Boolean): Intent {
             return Intent(context, RecordingService::class.java)
                 .setAction(ACTION_START)
                 .putExtra(EXTRA_RESULT_CODE, resultCode)
                 .putExtra(EXTRA_DATA, data)
                 .putExtra(EXTRA_USE_AUDIO, useAudio)
+                .putExtra(EXTRA_RETURN_TO_SETTINGS, returnToSettings)
         }
 
         fun getStopIntent(context: Context): Intent {

@@ -18,6 +18,10 @@ android {
         def prefUseAudio = "use_audio"
         buildConfigField 'String', 'PREF_USE_AUDIO', "\"${prefUseAudio}\""
         resValue("string", "pref_use_audio", prefUseAudio)
+
+        def prefReturnToSettings = "return_to_settings"
+        buildConfigField 'String', 'PREF_RETURN_TO_SETTINGS', "\"${prefReturnToSettings}\""
+        resValue("string", "pref_return_to_settings", prefReturnToSettings)
     }
     signingConfigs {
         release {

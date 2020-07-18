@@ -17,12 +17,14 @@ class ScreenRecordActivity : Activity() {
 
     private var useAudio = false
     private var fromSettings = false
+    private var returnToSettings = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(Space(this))
         useAudio = intent?.getBooleanExtra(EXTRA_USE_AUDIO, useAudio) ?: useAudio
         fromSettings = intent?.getBooleanExtra(EXTRA_FROM_SETTINGS, fromSettings) ?: fromSettings
+        returnToSettings = intent?.getBooleanExtra(EXTRA_RETURN_TO_SETTINGS, returnToSettings) ?: returnToSettings
 
         if (useAudio) {
             val permissions = arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO)
@@ -79,13 +81,9 @@ class ScreenRecordActivity : Activity() {
         val mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         val permissionIntent = mediaProjectionManager.createScreenCaptureIntent()
         if (useAudio) {
-            startActivityForResult(permissionIntent,
-                REQUEST_CODE_VIDEO_AUDIO
-            )
+            startActivityForResult(permissionIntent, REQUEST_CODE_VIDEO_AUDIO)
         } else {
-            startActivityForResult(permissionIntent,
-                REQUEST_CODE_VIDEO_ONLY
-            )
+            startActivityForResult(permissionIntent, REQUEST_CODE_VIDEO_ONLY)
         }
     }
 
@@ -96,7 +94,7 @@ class ScreenRecordActivity : Activity() {
             REQUEST_CODE_VIDEO_AUDIO -> {
                 if (resultCode == RESULT_OK) {
                     val useAudio = requestCode == REQUEST_CODE_VIDEO_AUDIO
-                    val intent = RecordingService.getStartIntent(this, resultCode, data, useAudio)
+                    val intent = RecordingService.getStartIntent(this, resultCode, data, useAudio, returnToSettings)
                     startForegroundServiceCompat(intent)
                     finish()
                 } else {
@@ -122,11 +120,18 @@ class ScreenRecordActivity : Activity() {
 
         private const val EXTRA_USE_AUDIO = "extra_useAudio"
         private const val EXTRA_FROM_SETTINGS = "extra_fromSettings"
+        private const val EXTRA_RETURN_TO_SETTINGS = "extra_returnToSettings"
 
-        fun getStartIntent(context: Context, useAudio: Boolean, fromSettings: Boolean): Intent {
+        fun getStartIntent(
+            context: Context,
+            useAudio: Boolean,
+            fromSettings: Boolean,
+            returnToSettings: Boolean
+        ): Intent {
             return Intent(context, ScreenRecordActivity::class.java)
                 .putExtra(EXTRA_USE_AUDIO, useAudio)
                 .putExtra(EXTRA_FROM_SETTINGS, fromSettings)
+                .putExtra(EXTRA_RETURN_TO_SETTINGS, returnToSettings)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }

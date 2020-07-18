@@ -46,6 +46,10 @@ class SwitchPreferenceView @JvmOverloads constructor(
         val defaultValue = a.getBoolean(R.styleable.SwitchPreferenceView_android_defaultValue, false)
         setChecked(pref.getBoolean(key, defaultValue))
 
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            pref.edit().putBoolean(key, isChecked).apply()
+        }
+
         a.recycle()
     }
 
